@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record DataUserCustomer(
-        @NotNull
-        User user,
 
         @NotBlank
         String name,

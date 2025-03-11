@@ -79,19 +79,12 @@ public class AuthenticationController {
             return new ResponseEntity<>("Telefone já existente", HttpStatus.FORBIDDEN);
         }
 
-        // Criação do usuário cliente com a senha criptografada
-            User user = dataUserCustomer.user();
-            String senhaCriptografada = passwordEncoder.encode(user.getPassword());
-            user.setPassword(senhaCriptografada);
 
-            // Salvamento do usuário
-            user = userRepository.save(user);
+
             // criação do user Cliente
 
             Customer customer = new Customer();
 
-            // Criação do cliente e associando o usuário
-            customer.setUser(user);
             customer.setName(dataUserCustomer.name());
             customer.setPhone(dataUserCustomer.phone());
 
