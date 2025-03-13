@@ -2,6 +2,7 @@ package com.project.selfservice.controller.managementProduct;
 
 import com.project.selfservice.domain.product.Category;
 import com.project.selfservice.domain.product.Product;
+import com.project.selfservice.domain.product.ProductDTO;
 import com.project.selfservice.domain.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,10 +20,10 @@ public class ProductQueryController {
     private ProductRepository productRepository;
 
     @GetMapping
-    public ResponseEntity<List<Product>> listProducts(@RequestParam(required = false) String name,
-                                                      @RequestParam(required = false) String category,
-                                                      Pageable pageable) {
-        Page<Product> products;
+    public ResponseEntity<List<ProductDTO>> listProducts(@RequestParam(required = false) String name,
+                                                         @RequestParam(required = false) String category,
+                                                         Pageable pageable) {
+        Page<ProductDTO> productsDTO = null;
 
         Category categoryEnum = null;
         if (category != null) {
@@ -35,18 +36,29 @@ public class ProductQueryController {
 
         if (name != null && categoryEnum != null) {
             // Filtra por nome e categoria
-            products = productRepository.searchByNameAndCategory(name, categoryEnum, pageable);
+            productsDTO = productRepository.searchByNameAndCategory(name, categoryEnum, pageable);
         } else if (name != null) {
             // Filtra apenas por nome
-            products = productRepository.findByNameContainingIgnoreCase(name, pageable);
+            productsDTO = productRepository.findByNameContainingIgnoreCase(name, pageable);
         } else if (categoryEnum != null) {
             // Filtra apenas por categoria
-            products = productRepository.findByCategory(categoryEnum, pageable);
+            productsDTO = productRepository.findByCategory(categoryEnum, pageable);
         } else {
             // Retorna todos os produtos
-            products = productRepository.findAll(pageable);
+            Page<Product> products = productRepository.findAll(pageable);
+            Page<ProductDTO> productDTO = products.map(product ->
+                    new ProductDTO(
+                            product.getId(),
+                            product.getName(),
+                            product.getDescription(),
+                            product.getPrice(),
+                            product.getAvailable(),
+                            product.getCategory(),
+                            product.getStock() != null ? product.getStock().getId() : null // Pegando apenas o ID do estoque
+                    )
+            );
         }
 
-        return ResponseEntity.ok(products.getContent());
+        return ResponseEntity.ok(productsDTO.getContent());
     }
 }

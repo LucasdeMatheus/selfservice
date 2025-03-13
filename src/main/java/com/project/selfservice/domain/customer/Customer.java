@@ -1,7 +1,6 @@
 package com.project.selfservice.domain.customer;
 
-import com.project.selfservice.domain.Order;
-import com.project.selfservice.domain.user.User;
+import com.project.selfservice.domain.order.Order;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,8 +21,6 @@ public class Customer {
     private List<Order> orderHistory;
 
 
-    @OneToOne
-    private User user;
 
     public Long getId() {
         return id;
@@ -50,11 +47,4 @@ public class Customer {
         this.phone = phone;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

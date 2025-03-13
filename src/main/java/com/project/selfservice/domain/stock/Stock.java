@@ -15,8 +15,7 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "stock")
     private Product product;
 
     private Integer quantityInStock; // quantidade

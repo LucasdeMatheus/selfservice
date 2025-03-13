@@ -1,6 +1,6 @@
 package com.project.selfservice.domain.seller;
 
-import com.project.selfservice.domain.Order;
+import com.project.selfservice.domain.order.Order;
 import com.project.selfservice.domain.user.User;
 import jakarta.persistence.*;
 import java.util.List;

@@ -1,7 +1,10 @@
 package com.project.selfservice.domain.product;
 
+import com.project.selfservice.domain.order.OrderItem;
 import com.project.selfservice.domain.stock.Stock;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Product {
@@ -15,9 +18,13 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category; // Categoria do produto
 
-    @OneToOne
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", referencedColumnName = "id")
     private Stock stock;
+
 
     public long getId() {
         return id;
